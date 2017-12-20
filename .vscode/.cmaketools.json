@@ -1,0 +1,62 @@
+{
+  "variant": {
+    "label": "Debug",
+    "keywordSettings": {
+      "buildType": "debug"
+    },
+    "description": "Emit debug information without performing optimizations"
+  },
+  "activeEnvironments": [],
+  "codeModel": {
+    "configurations": [
+      {
+        "name": "Debug",
+        "projects": [
+          {
+            "buildDirectory": "/home/shenghan/code/CarND-MPC-Project/build",
+            "name": "MPC",
+            "sourceDirectory": "/home/shenghan/code/CarND-MPC-Project",
+            "targets": [
+              {
+                "artifacts": [
+                  "/home/shenghan/code/CarND-MPC-Project/build/mpc"
+                ],
+                "buildDirectory": "/home/shenghan/code/CarND-MPC-Project/build",
+                "fileGroups": [
+                  {
+                    "compileFlags": "-Wall -g   -std=c++11 -O3",
+                    "includePath": [
+                      {
+                        "path": "/usr/local/include"
+                      },
+                      {
+                        "path": "/home/shenghan/code/CarND-MPC-Project/src/Eigen-3.3"
+                      }
+                    ],
+                    "isGenerated": false,
+                    "language": "CXX",
+                    "sources": [
+                      "src/MPC.cpp",
+                      "src/main.cpp"
+                    ]
+                  }
+                ],
+                "fullName": "mpc",
+                "linkLanguageFlags": "-Wall -g",
+                "linkLibraries": "-Wl,-rpath,/usr/local/lib -lipopt -lz -lssl -luv -luWS",
+                "linkPath": "-L/usr/local/lib",
+                "linkerLanguage": "CXX",
+                "name": "mpc",
+                "sourceDirectory": "/home/shenghan/code/CarND-MPC-Project",
+                "type": "EXECUTABLE"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "cookie": "0.017162544348325204",
+    "inReplyTo": "codemodel",
+    "type": "reply"
+  }
+}
