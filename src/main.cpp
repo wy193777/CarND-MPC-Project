@@ -105,6 +105,15 @@ int main()
           double py = j[1]["y"];
           double psi = j[1]["psi"];
           double v = j[1]["speed"];
+          double acceleration = j[1]["throttle"];
+
+          //  change of sign because turning left is negative sign in simulator but positive yaw for MPC
+          double delta = j[1]["steering_angle"];
+          delta = -delta; 
+          
+          //to convert miles per hour to meter per second, and you should convert ref_v too
+          double Lf = 2.67;
+          double latency = 0.1;
 
           for (size_t i = 0; i < ptsx.size(); i++)
           {
@@ -129,8 +138,17 @@ int main()
           double cte = polyeval(coeffs, 0);
           double epsi = -atan(coeffs[1]);
 
+          v *= 0.44704;
+          psi = delta; // in coordinate now, so use steering angle to predict x and y
+          px = v * cos(psi) * latency;
+          py = v * sin(psi) * latency;
+          cte = cte + v * sin(epsi) * latency;
+          epsi = epsi + v * delta * latency / Lf;
+          psi = psi + v * delta * latency / Lf;
+          v = v + acceleration * latency;
+
           Eigen::VectorXd state(6);
-          state << 0, 0, 0, v, cte, epsi;
+          state << px, py, psi, v, cte, epsi;
           auto vars = mpc.Solve(state, coeffs);
           cout << "solve result " << vars.size() << endl;
 
@@ -171,7 +189,7 @@ int main()
           json msgJson;
           // NOTE: Remember to divide by deg2rad(25) before you send the steering value back.
           // Otherwise the values will be in between [-deg2rad(25), deg2rad(25)] instead of [-1, 1].
-          msgJson["steering_angle"] = - vars[0] / (deg2rad(25) * 2.67);
+          msgJson["steering_angle"] = -vars[0] / (deg2rad(25) * 2.67);
           msgJson["throttle"] = vars[1];
 
           msgJson["next_x"] = next_x_vals;
